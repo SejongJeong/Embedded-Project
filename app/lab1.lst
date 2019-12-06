@@ -1,0 +1,137 @@
+GAS LISTING C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s 			page 1
+
+
+   1               		.file	"lab1.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.global	LedTask
+  10               		.type	LedTask, @function
+  11               	LedTask:
+  12               	/* prologue: function */
+  13               	/* frame size = 0 */
+  14 0000 8FEF      		ldi r24,lo8(-1)
+  15 0002 8ABB      		out 58-32,r24
+  16 0004 60E0      		ldi r22,lo8(0)
+  17 0006 70E0      		ldi r23,hi8(0)
+  18 0008 E1E0      		ldi r30,lo8(1)
+  19 000a 40E9      		ldi r20,lo8(400)
+  20 000c 51E0      		ldi r21,hi8(400)
+  21               	.L11:
+  22 000e 6730      		cpi r22,7
+  23 0010 7105      		cpc r23,__zero_reg__
+  24 0012 04F0      		brlt .L4
+  25 0014 60E0      		ldi r22,lo8(0)
+  26 0016 70E0      		ldi r23,hi8(0)
+  27               	.L7:
+  28 0018 EBBB      		out 59-32,r30
+  29 001a 20ED      		ldi r18,lo8(2000)
+  30 001c 37E0      		ldi r19,hi8(2000)
+  31               	.L5:
+  32 001e CA01      		movw r24,r20
+  33               	/* #APP */
+  34               	 ;  105 "c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h" 1
+  35 0020 0197      		1: sbiw r24,1
+  36 0022 01F4      		brne 1b
+  37               	 ;  0 "" 2
+  38               	/* #NOAPP */
+  39 0024 2150      		subi r18,lo8(-(-1))
+  40 0026 3040      		sbci r19,hi8(-(-1))
+  41 0028 01F4      		brne .L5
+  42 002a 6F5F      		subi r22,lo8(-(1))
+  43 002c 7F4F      		sbci r23,hi8(-(1))
+  44 002e 6730      		cpi r22,7
+  45 0030 7105      		cpc r23,__zero_reg__
+  46 0032 01F0      		breq .L13
+  47 0034 E695      		lsr r30
+  48 0036 00C0      		rjmp .L7
+  49               	.L4:
+  50 0038 EBBB      		out 59-32,r30
+  51 003a 20ED      		ldi r18,lo8(2000)
+  52 003c 37E0      		ldi r19,hi8(2000)
+  53               	.L3:
+  54 003e CA01      		movw r24,r20
+  55               	/* #APP */
+  56               	 ;  105 "c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h" 1
+  57 0040 0197      		1: sbiw r24,1
+GAS LISTING C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s 			page 2
+
+
+  58 0042 01F4      		brne 1b
+  59               	 ;  0 "" 2
+  60               	/* #NOAPP */
+  61 0044 2150      		subi r18,lo8(-(-1))
+  62 0046 3040      		sbci r19,hi8(-(-1))
+  63 0048 01F4      		brne .L3
+  64 004a EE0F      		lsl r30
+  65 004c 6F5F      		subi r22,lo8(-(1))
+  66 004e 7F4F      		sbci r23,hi8(-(1))
+  67 0050 00C0      		rjmp .L11
+  68               	.L13:
+  69 0052 60E0      		ldi r22,lo8(0)
+  70 0054 70E0      		ldi r23,hi8(0)
+  71 0056 E1E0      		ldi r30,lo8(1)
+  72 0058 00C0      		rjmp .L11
+  73               		.size	LedTask, .-LedTask
+  74               	.global	main
+  75               		.type	main, @function
+  76               	main:
+  77               	/* prologue: function */
+  78               	/* frame size = 0 */
+  79 005a 0E94 0000 		call OSInit
+  80               	/* #APP */
+  81               	 ;  19 "lab1.c" 1
+  82 005e F894      		cli
+  83               	 ;  0 "" 2
+  84               	/* #NOAPP */
+  85 0060 87E0      		ldi r24,lo8(7)
+  86 0062 83BF      		out 83-32,r24
+  87 0064 81E0      		ldi r24,lo8(1)
+  88 0066 87BF      		out 87-32,r24
+  89 0068 84E6      		ldi r24,lo8(100)
+  90 006a 82BF      		out 82-32,r24
+  91               	/* #APP */
+  92               	 ;  23 "lab1.c" 1
+  93 006c 7894      		sei
+  94               	 ;  0 "" 2
+  95               	/* #NOAPP */
+  96 006e 80E0      		ldi r24,lo8(gs(LedTask))
+  97 0070 90E0      		ldi r25,hi8(gs(LedTask))
+  98 0072 60E0      		ldi r22,lo8(0)
+  99 0074 70E0      		ldi r23,hi8(0)
+ 100 0076 40E0      		ldi r20,lo8(LedTaskStk+127)
+ 101 0078 50E0      		ldi r21,hi8(LedTaskStk+127)
+ 102 007a 20E0      		ldi r18,lo8(0)
+ 103 007c 0E94 0000 		call OSTaskCreate
+ 104 0080 0E94 0000 		call OSStart
+ 105 0084 80E0      		ldi r24,lo8(0)
+ 106 0086 90E0      		ldi r25,hi8(0)
+ 107               	/* epilogue start */
+ 108 0088 0895      		ret
+ 109               		.size	main, .-main
+ 110               		.comm LedTaskStk,128,1
+ 111               	.global __do_clear_bss
+GAS LISTING C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 lab1.c
+C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s:2      *ABS*:0000003f __SREG__
+C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s:3      *ABS*:0000003e __SP_H__
+C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s:4      *ABS*:0000003d __SP_L__
+C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s:5      *ABS*:00000034 __CCP__
+C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s:11     .text:00000000 LedTask
+C:\Users\wjdtp\AppData\Local\Temp/ccQOQyNO.s:76     .text:0000005a main
+                            *COM*:00000080 LedTaskStk
+
+UNDEFINED SYMBOLS
+OSInit
+OSTaskCreate
+OSStart
+__do_clear_bss
